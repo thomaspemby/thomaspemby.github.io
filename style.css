@@ -1,0 +1,650 @@
+/* ==========================================================================
+   1. Reset & Global Styles
+   ========================================================================== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+html {
+    scroll-behavior: smooth;
+    /* Hardware acceleration boost */
+    backface-visibility: hidden;
+}
+
+body {
+    background-color: #f4f6f8;
+    color: #333333;
+}
+
+.container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+/* ==========================================================================
+   2. Responsive Navigation Bar
+   ========================================================================== */
+.navbar {
+    background-color: #ffffff;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.08);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.nav-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.nav-logo {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #002447; /* Matching the deep navy brand */
+    text-decoration: none;
+    letter-spacing: 0.5px;
+}
+
+.nav-menu {
+    display: flex;
+    list-style: none;
+    gap: 30px;
+}
+
+.nav-link {
+    text-decoration: none;
+    color: #555555;
+    font-weight: 500;
+    transition: color 0.3s ease;
+}
+
+.nav-link:hover,
+.nav-link.active {
+    color: #0087dc; /* Classic Tory Blue */
+    font-weight: 700;
+}
+
+/* Hide mobile toggle elements by default */
+.menu-toggle, 
+.hamburger {
+    display: none;
+}
+
+/* ==========================================================================
+   3. Hero Section (Conservative Branded)
+   ========================================================================== */
+.hero-section {
+    background: linear-gradient(135deg, #002447 0%, #003366 100%); /* Deep Westminster Navy */
+    color: #ffffff;
+    padding: 120px 0;
+    text-align: center;
+    border-bottom: 4px solid #990000; /* Deep Crimson Accent Bar */
+}
+
+.hero-subtitle {
+    display: block;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: #0087dc; /* Tory Blue Accent */
+    margin-bottom: 20px;
+    font-weight: 700;
+    line-height: 1.4;
+}
+
+.hero-content h1 {
+    font-family: 'Georgia', Times, serif; /* Dignified Editorial Typography */
+    font-size: 3.4rem;
+    font-weight: 700;
+    margin-bottom: 25px;
+    letter-spacing: -0.5px;
+}
+
+.hero-content p {
+    font-size: 1.25rem;
+    max-width: 750px;
+    margin: 0 auto 45px auto;
+    opacity: 0.95;
+    line-height: 1.7;
+}
+
+/* ==========================================================================
+   4. Buttons & Interactive Elements
+   ========================================================================== */
+.hero-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+}
+
+.btn {
+    display: inline-block;
+    padding: 14px 32px;
+    border-radius: 3px; /* Sharp, traditional edges */
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.95rem;
+    letter-spacing: 0.5px;
+    transition: all 0.3s ease;
+}
+
+.btn-primary {
+    background-color: #0087dc;
+    color: #ffffff;
+}
+
+.btn-primary:hover {
+    background-color: #006cb0;
+}
+
+.btn-secondary {
+    border: 2px solid #ffffff;
+    color: #ffffff;
+}
+
+.btn-secondary:hover {
+    background-color: #ffffff;
+    color: #002447;
+}
+
+/* ==========================================================================
+   5. Overview Grid & Cards Focus
+   ========================================================================== */
+.overview-section {
+    padding: 95px 0;
+    background-color: #f4f6f8;
+}
+
+.section-title {
+    text-align: center;
+    font-family: 'Georgia', Times, serif;
+    font-size: 2.4rem;
+    font-weight: 700;
+    margin-bottom: 60px;
+    color: #002447;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 35px;
+}
+
+.card {
+    background: #ffffff;
+    padding: 45px 35px;
+    border-radius: 4px;
+    box-shadow: 0 4px 12px rgba(0, 36, 71, 0.04);
+    text-align: center;
+    transition: all 0.3s ease;
+    border-top: 3px solid #002447; /* Structured border accent */
+}
+
+.card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 25px rgba(0, 36, 71, 0.08);
+    border-top-color: #0087dc; /* Swaps to Tory Blue on hover */
+}
+
+.card-icon-wrapper {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 65px;
+    height: 65px;
+    background-color: #f0f6fa;
+    border-radius: 50%;
+    margin-bottom: 25px;
+}
+
+.card-icon {
+    font-size: 1.5rem;
+    color: #002447;
+}
+
+.card h3 {
+    margin-bottom: 15px;
+    font-family: 'Georgia', Times, serif;
+    font-size: 1.35rem;
+    color: #002447;
+}
+
+.card p {
+    color: #4a5568;
+    line-height: 1.65;
+    font-size: 0.95rem;
+}
+
+/* ==========================================================================
+   6. Main Footer
+   ========================================================================== */
+.main-footer {
+    padding: 45px 0;
+    background-color: #001830;
+    color: #a0aec0;
+    font-size: 0.9rem;
+    border-top: 1px solid #002447;
+}
+
+.footer-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.social-links a {
+    color: #a0aec0;
+    font-size: 1.2rem;
+    margin-left: 20px;
+    transition: color 0.3s ease;
+}
+
+.social-links a:hover {
+    color: #0087dc;
+}
+
+/* ==========================================================================
+   7. Media Queries (Mobile Layout Adjustments)
+   ========================================================================== */
+@media screen and (max-width: 768px) {
+    /* Navbar Responsiveness Rules */
+    .hamburger {
+        display: block;
+        font-size: 1.5rem;
+        cursor: pointer;
+        color: #002447;
+    }
+
+    .nav-menu {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        flex-direction: column;
+        background-color: #ffffff;
+        width: 100%;
+        gap: 0;
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.3s ease-in-out;
+        box-shadow: 0 4px 5px rgba(0,0,0,0.05);
+    }
+
+    .nav-menu li {
+        width: 100%;
+        text-align: center;
+    }
+
+    .nav-link {
+        display: block;
+        padding: 20px;
+        border-top: 1px solid #eee;
+    }
+
+    .menu-toggle:checked ~ .nav-menu {
+        max-height: 300px;
+    }
+
+    /* Hero layout scaling down */
+    .hero-section {
+        padding: 80px 0;
+    }
+
+    .footer-content {
+        flex-direction: column;
+        gap: 20px;
+        text-align: center;
+    }
+
+    .social-links a {
+        margin: 0 10px;
+    }
+}
+
+@media screen and (max-width: 576px) {
+    .hero-content h1 {
+        font-size: 2.3rem;
+    }
+    
+    .hero-content p {
+        font-size: 1.1rem;
+    }
+    
+    .hero-buttons {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .btn {
+        width: 100%;
+        max-width: 280px;
+    }
+}
+
+/* ==========================================================================
+   10. High-Contrast Electrified Broadcast Path
+   ========================================================================== */
+.about-hero {
+    background: #001524; /* Absolute Deep Midnight */
+    color: #ffffff;
+    padding: 80px 0;
+    text-align: center;
+    border-bottom: 4px solid #cc0000; /* Ultra-vivid Crimson */
+}
+
+.about-hero h1 {
+    font-family: 'Georgia', Times, serif;
+    font-size: 2.8rem;
+    margin-bottom: 12px;
+    letter-spacing: -0.5px;
+}
+
+.lead-text {
+    font-size: 1.15rem;
+    opacity: 0.9;
+    max-width: 650px;
+    margin: 0 auto;
+    color: #94a3b8;
+}
+
+.timeline-container {
+    padding: 140px 0;
+    background-color: #070d19; /* Deepened further for maximum neon separation */
+    position: relative;
+    overflow: hidden;
+}
+
+.timeline-wrapper {
+    position: relative;
+    max-width: 1050px;
+    margin: 0 auto;
+}
+
+/* SVG Audio Wave Setup */
+.timeline-svg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 1;
+}
+
+.timeline-svg path {
+    fill: none;
+    stroke-width: 6px;
+    stroke-linecap: round;
+}
+
+/* Static background track: Switched to crisp, translucent ice-white */
+.path-bg {
+    stroke: rgba(255, 255, 255, 0.08);
+}
+
+/* Electrified dynamic cyan line with hyper-vivid glow execution */
+.path-draw {
+    stroke: #00f2fe; /* Electric Cyan */
+    filter: drop-shadow(0 0 12px #00f2fe) drop-shadow(0 0 4px #0072ff); /* Multi-tiered laser glow */
+    transition: stroke-dashoffset 0.25s ease-out; 
+    will-change: stroke-dashoffset;
+}
+
+/* Timeline Layout Blocks - Clean Static Resting State */
+.timeline-node {
+    display: flex;
+    align-items: center;
+    position: relative;
+    margin-bottom: 180px;
+    width: 100%;
+    z-index: 2;
+    /* Removed the opacity hiding rules completely so icons and cards remain visible */
+}
+
+.timeline-node:last-child {
+    margin-bottom: 60px;
+}
+.timeline-node.left-node { flex-direction: row-reverse; }
+.timeline-node.right-node { flex-direction: row; }
+
+.timeline-node.node-visible {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+}
+
+/* Record Node Icons (Resting: Solid Matte Graphite for strong contrast) */
+.node-icon {
+    width: 60px;
+    height: 60px;
+    background-color: #1e293b;
+    color: #94a3b8;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    box-shadow: 0 0 0 4px #070d19, 0 4px 20px rgba(0,0,0,0.6);
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 10;
+    transition: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* Vinyl Record Spin & Ignition pop */
+.timeline-node.active-path .node-icon {
+    background-color: #00f2fe;
+    color: #070d19; /* High contrast dark icon icon text */
+    font-weight: bold;
+    transform: translateX(-50%) rotate(360deg) scale(1.25);
+    box-shadow: 0 0 0 4px #070d19, 0 0 30px rgba(0, 242, 254, 0.8);
+}
+
+/* High Contrast Content Cards */
+.node-content {
+    width: 42%;
+    background: #0f172a; /* Slate Dark Card Canvas */
+    padding: 35px;
+    border-radius: 8px;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+    border: 1px solid #1e293b; /* Distinct border wall resting state */
+    transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.node-icon, .node-content {
+    transform: translateZ(0);
+    will-change: transform, background-color, border-color;
+}
+
+/* Card explodes with sharp border glow when line locks in */
+.timeline-node.active-path .node-content {
+    background: #1e293b; /* Card brightens internally */
+    border-color: #00f2fe; /* Sharp Electric border outline */
+    transform: scale(1.03);
+    box-shadow: 0 0 25px rgba(0, 242, 254, 0.15), 0 20px 40px rgba(0,0,0,0.6);
+}
+
+/* Alternating Border Flash for Left Nodes */
+.timeline-node.left-node.active-path .node-content {
+    border-color: #ff0055; /* Hot Neon Crimson Border flash on alternating cards */
+    box-shadow: 0 0 25px rgba(255, 0, 85, 0.15), 0 20px 40px rgba(0,0,0,0.6);
+}
+
+.node-tag {
+    display: inline-block;
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: #64748b;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 12px;
+    transition: color 0.4s ease;
+}
+
+.timeline-node.active-path .node-tag {
+    color: #00f2fe;
+}
+
+.timeline-node.left-node.active-path .node-tag {
+    color: #ff0055;
+}
+
+.node-content h3 {
+    font-family: 'Georgia', Times, serif;
+    color: #ffffff;
+    font-size: 1.45rem;
+    margin-bottom: 12px;
+}
+
+.node-content p {
+    color: #e2e8f0; /* Boosted copy readability contrast */
+    line-height: 1.7;
+    font-size: 0.95rem;
+}
+
+
+
+/* ==========================================================================
+   12. Editorial Blog Theme (The Chamber Brief)
+   ========================================================================== */
+.blog-hero {
+    background-color: #002447;
+    color: #ffffff;
+    padding: 70px 0;
+    text-align: center;
+    border-bottom: 4px solid #990000;
+}
+
+.blog-hero h1 {
+    font-family: 'Georgia', Times, serif;
+    font-size: 2.6rem;
+    margin-bottom: 8px;
+}
+
+.blog-container {
+    max-width: 850px; /* Slimmer line length for comfortable text reading */
+    padding: 80px 20px;
+    min-height: 60vh;
+}
+
+.blog-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 45px;
+}
+
+/* Individual Post Card Previews */
+.post-card {
+    background: #ffffff;
+    padding: 40px;
+    border-radius: 4px;
+    box-shadow: 0 4px 15px rgba(0, 36, 71, 0.04);
+    border-left: 4px solid #002447;
+    transition: all 0.3s ease;
+}
+
+.post-card:hover {
+    transform: translateX(5px);
+    border-left-color: #0087dc;
+    box-shadow: 0 8px 25px rgba(0, 36, 71, 0.08);
+}
+
+.post-meta {
+    display: block;
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: #0087dc;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    margin-bottom: 12px;
+}
+
+.post-card h2 {
+    font-family: 'Georgia', Times, serif;
+    color: #002447;
+    font-size: 1.7rem;
+    margin-bottom: 15px;
+    line-height: 1.3;
+}
+
+.post-excerpt {
+    color: #4a5568;
+    line-height: 1.65;
+    margin-bottom: 20px;
+    font-size: 1rem;
+}
+
+.read-more-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: #002447;
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 0.95rem;
+    transition: color 0.2s ease;
+}
+
+.read-more-btn:hover {
+    color: #0087dc;
+}
+
+/* Single Article Reading Mode UI Layout */
+.back-to-feed-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: #4a5568;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.95rem;
+    margin-bottom: 40px;
+    transition: color 0.2s ease;
+}
+
+.back-to-feed-btn:hover {
+    color: #002447;
+}
+
+.full-post-title {
+    font-family: 'Georgia', Times, serif;
+    font-size: 2.5rem;
+    color: #002447;
+    line-height: 1.25;
+    margin-top: 10px;
+    margin-bottom: 20px;
+}
+
+.editorial-divider {
+    border: 0;
+    height: 1px;
+    background-color: #e2e8f0;
+    margin-bottom: 35px;
+}
+
+.full-post-body p {
+    font-size: 1.1rem;
+    color: #2d3748;
+    line-height: 1.8; /* Academic editorial standard layout proportions */
+    margin-bottom: 25px;
+}
+
+/* Premium Traditional Blockquote styling */
+.full-post-body blockquote {
+    font-family: 'Georgia', Times, serif;
+    font-style: italic;
+    font-size: 1.25rem;
+    color: #4a5568;
+    border-left: 4px solid #990000; /* Crimson quote anchor bar */
+    padding-left: 25px;
+    margin: 35px 0;
+    line-height: 1.6;
+}

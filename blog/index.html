@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blog & Commentary | Thomas Pemberton-Marsh</title>
+    <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="nav-logo">Thomas Pemberton-Marsh</a>
+            
+            <input type="checkbox" id="menu-toggle" class="menu-toggle">
+            <label for="menu-toggle" class="hamburger">
+                <i class="fas fa-bars"></i>
+            </label>
+
+            <ul class="nav-menu">
+                <li><a href="/" class="nav-link">Home</a></li>
+                <li><a href="/about/" class="nav-link">About</a></li>
+                <li><a href="/blog/" class="nav-link">Blog</a></li>
+                <li><a href="/contact/" class="nav-link">Contact</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <header class="blog-hero">
+        <div class="container">
+            <h1>The Chamber Brief</h1>
+            <p>Political commentary, economic analysis, and dispatches from Westminster and beyond.</p>
+        </div>
+    </header>
+
+    <main id="blog-feed" class="container blog-container">
+        <div class="blog-grid">
+            
+            <article class="post-card">
+                <span class="post-meta">June 18, 2026 · Philosophy & Policy</span>
+                <h2>The Constitutional Imperative: Reanchoring National Institutions</h2>
+                <p class="post-excerpt">An analysis of modern constitutional structures, exploring how conservative principles can preserve organizational integrity in a shifting bureaucratic landscape...</p>
+                <a href="/blog/?blog=1" class="read-more-btn">Read Article <i class="fas fa-arrow-right"></i></a>
+            </article>
+
+            <article class="post-card">
+                <span class="post-meta">May 24, 2026 · Grassroots Strategy</span>
+                <h2>Localism and the Future of Regional Governance</h2>
+                <p class="post-excerpt">Reflections on local government engagement, community coordination frameworks, and driving structural municipal policy from the grassroots level up...</p>
+                <a href="/blog/?blog=2" class="read-more-btn">Read Article <i class="fas fa-arrow-right"></i></a>
+            </article>
+
+        </div>
+    </main>
+
+    <main id="single-post-view" class="container blog-container" style="display: none;">
+        <a href="/blog" class="back-to-feed-btn"><i class="fas fa-arrow-left"></i> Back to All Articles</a>
+        <article id="active-post-content" class="full-post">
+            </article>
+    </main>
+
+    <footer class="main-footer">
+        <div class="container footer-content">
+            <p>&copy; 2026 Thomas Pemberton-Marsh. All rights reserved.</p>
+            <div class="social-links">
+                <a href="https://www.linkedin.com/in/thomas-pemberton-marsh/" target="_blank"><i class="fab fa-linkedin"></i></a>
+                <a href="#" target="_blank"><i class="fab fa-x-twitter"></i></a>
+            </div>
+        </div>
+    </footer>
+
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        // Read URL variables (e.g., ?blog=1)
+        const urlParams = new URLSearchParams(window.location.search);
+        const blogId = urlParams.get('blog');
+
+        const feedSection = document.getElementById("blog-feed");
+        const singleViewSection = document.getElementById("single-post-view");
+        const contentContainer = document.getElementById("active-post-content");
+
+        // RegEx validation check to ensure the parameter is strictly a safe number/string id
+        if (blogId && /^[a-zA-Z0-9_-]+$/.test(blogId)) {
+            
+            // Asynchronously pull the separate file from your articles subfolder
+            fetch(`/articles/${blogId}.html`)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error("Article file not found");
+                    }
+                    return response.text();
+                })
+                .then(htmlContent => {
+                    // Hide the master preview list grid
+                    feedSection.style.display = "none";
+                    
+                    // Inject the raw HTML content directly from the separate file
+                    contentContainer.innerHTML = htmlContent;
+                    
+                    // Extract the title text inside the loaded h1 tag to update the browser tab dynamically
+                    const loadedTitle = contentContainer.querySelector("h1");
+                    if (loadedTitle) {
+                        document.title = `${loadedTitle.innerText} | Thomas Pemberton-Marsh`;
+                    }
+
+                    // Reveal the single post view container panel
+                    singleViewSection.style.display = "block";
+                })
+                .catch(error => {
+                    console.error("Routing error:", error);
+                    // Fallback: If file doesn't exist, keep user safely on the main feed list grid
+                    feedSection.style.display = "block";
+                    singleViewSection.style.display = "none";
+                });
+        } else {
+            // Default baseline configuration: Ensure master list displays clean
+            feedSection.style.display = "block";
+            singleViewSection.style.display = "none";
+        }
+    });
+</script>
+
+</body>
+</html>
