@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Blog & Commentary | Thomas Pemberton-Marsh</title>
+    <title>Blog | Thomas Pemberton-Marsh</title>
     <link rel="stylesheet" href="../style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
@@ -37,19 +37,7 @@
     <main id="blog-feed" class="container blog-container">
         <div class="blog-grid">
             
-            <article class="post-card">
-                <span class="post-meta">June 18, 2026 · Philosophy & Policy</span>
-                <h2>The Constitutional Imperative: Reanchoring National Institutions</h2>
-                <p class="post-excerpt">An analysis of modern constitutional structures, exploring how conservative principles can preserve organizational integrity in a shifting bureaucratic landscape...</p>
-                <a href="/blog/?blog=1" class="read-more-btn">Read Article <i class="fas fa-arrow-right"></i></a>
-            </article>
-
-            <article class="post-card">
-                <span class="post-meta">May 24, 2026 · Grassroots Strategy</span>
-                <h2>Localism and the Future of Regional Governance</h2>
-                <p class="post-excerpt">Reflections on local government engagement, community coordination frameworks, and driving structural municipal policy from the grassroots level up...</p>
-                <a href="/blog/?blog=2" class="read-more-btn">Read Article <i class="fas fa-arrow-right"></i></a>
-            </article>
+            
 
         </div>
     </main>
@@ -72,51 +60,96 @@
 
 <script>
     document.addEventListener("DOMContentLoaded", () => {
-        // Read URL variables (e.g., ?blog=1)
         const urlParams = new URLSearchParams(window.location.search);
         const blogId = urlParams.get('blog');
 
         const feedSection = document.getElementById("blog-feed");
+        const gridContainer = document.querySelector(".blog-grid");
         const singleViewSection = document.getElementById("single-post-view");
         const contentContainer = document.getElementById("active-post-content");
 
-        // RegEx validation check to ensure the parameter is strictly a safe number/string id
-        if (blogId && /^[a-zA-Z0-9_-]+$/.test(blogId)) {
-            
-            // Asynchronously pull the separate file from your articles subfolder
+        // ROUTE A: Single Article Active (?blog=1)
+        if (blogId && /^[0-9]+$/.test(blogId)) {
+            // Absolute path fetch ensures it finds /articles/1.html regardless of URL slashes
             fetch(`/articles/${blogId}.html`)
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error("Article file not found");
-                    }
-                    return response.text();
-                })
-                .then(htmlContent => {
-                    // Hide the master preview list grid
+                .then(res => { if (!res.ok) throw new Error(); return res.text(); })
+                .then(html => {
                     feedSection.style.display = "none";
+                    contentContainer.innerHTML = html;
                     
-                    // Inject the raw HTML content directly from the separate file
-                    contentContainer.innerHTML = htmlContent;
+                    const title = contentContainer.querySelector("h1, .full-post-title");
+                    if (title) document.title = `${title.innerText} | Thomas Pemberton-Marsh`;
                     
-                    // Extract the title text inside the loaded h1 tag to update the browser tab dynamically
-                    const loadedTitle = contentContainer.querySelector("h1");
-                    if (loadedTitle) {
-                        document.title = `${loadedTitle.innerText} | Thomas Pemberton-Marsh`;
-                    }
-
-                    // Reveal the single post view container panel
                     singleViewSection.style.display = "block";
                 })
-                .catch(error => {
-                    console.error("Routing error:", error);
-                    // Fallback: If file doesn't exist, keep user safely on the main feed list grid
+                .catch(() => {
                     feedSection.style.display = "block";
                     singleViewSection.style.display = "none";
                 });
+
+        // ROUTE B: Loop Through the Folder Dynamically (Scanning 1.html, 2.html...)
         } else {
-            // Default baseline configuration: Ensure master list displays clean
             feedSection.style.display = "block";
             singleViewSection.style.display = "none";
+            gridContainer.innerHTML = ""; 
+
+            // Scrape the directory listing from Python
+            fetch('/articles/')
+                .then(res => { if (!res.ok) throw new Error(); return res.text(); })
+                .then(directoryHtml => {
+                    const parser = new DOMParser();
+                    const doc = parser.parseFromString(directoryHtml, 'text/html');
+                    
+                    // Filter down to strictly numbered files (1.html, 2.html, etc.)
+                    const links = Array.from(doc.querySelectorAll('a'))
+                                       .map(a => a.getAttribute('href'))
+                                       .filter(href => href && /^\d+\.html$/.test(href));
+
+                    if (links.length === 0) {
+                        gridContainer.innerHTML = "<p>No briefings found in the articles folder.</p>";
+                        return;
+                    }
+
+                    // Map across your numerical files and extract contents
+                    const fetchPromises = links.map(href => {
+                        const slug = href.replace('.html', ''); // Extract "1", "2"
+                        
+                        return fetch(`/articles/${href}`)
+                            .then(res => res.text())
+                            .then(articleHtml => {
+                                const artDoc = parser.parseFromString(articleHtml, 'text/html');
+                                const title = artDoc.querySelector('h1, .full-post-title')?.innerText || "Untitled Briefing";
+                                const meta = artDoc.querySelector('.post-meta')?.innerText || "Analysis";
+                                const firstParagraph = artDoc.querySelector('p')?.innerText || "";
+                                const excerpt = firstParagraph.length > 160 ? firstParagraph.substring(0, 157) + "..." : firstParagraph;
+
+                                return { slug, title, meta, excerpt };
+                            })
+                            .catch(() => null);
+                    });
+
+                    // Render out the dynamic content loops
+                    Promise.all(fetchPromises).then(articles => {
+                        // Sort articles numerically so 1 shows before 2
+                        articles.sort((a, b) => (a && b) ? parseInt(a.slug) - parseInt(b.slug) : 0);
+
+                        articles.forEach(art => {
+                            if (!art) return;
+                            const card = document.createElement('article');
+                            card.className = 'post-card';
+                            card.innerHTML = `
+                                <span class="post-meta">${art.meta}</span>
+                                <h2>${art.title}</h2>
+                                <p class="post-excerpt">${art.excerpt}</p>
+                                <a href="/blog/?blog=${art.slug}" class="read-more-btn">Read Article <i class="fas fa-arrow-right"></i></a>
+                            `;
+                            gridContainer.appendChild(card);
+                        });
+                    });
+                })
+                .catch(() => {
+                    gridContainer.innerHTML = "<p>Unable to read the articles folder directly.</p>";
+                });
         }
     });
 </script>
