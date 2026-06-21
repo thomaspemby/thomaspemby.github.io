@@ -68,9 +68,21 @@
         const singleViewSection = document.getElementById("single-post-view");
         const contentContainer = document.getElementById("active-post-content");
 
+        // ==========================================
+        // 1. MANUALLY REGISTER YOUR ARTICLES HERE
+        // Just add a new object to this list whenever you make a new post!
+        // ==========================================
+        const articlesList = [
+            {
+                slug: "1",
+                title: "Building an Independent Digital Headquarters",
+                meta: "June 2026 • Announcements",
+                excerpt: "A deliberate step toward building a permanent, direct line of communication, free from third-party algorithms and character limits."
+            }
+        ];
+
         // ROUTE A: Single Article Active (?blog=1)
         if (blogId && /^[0-9]+$/.test(blogId)) {
-            // Absolute path fetch ensures it finds /articles/1.html regardless of URL slashes
             fetch(`/articles/${blogId}.html`)
                 .then(res => { if (!res.ok) throw new Error(); return res.text(); })
                 .then(html => {
@@ -87,69 +99,31 @@
                     singleViewSection.style.display = "none";
                 });
 
-        // ROUTE B: Loop Through the Folder Dynamically (Scanning 1.html, 2.html...)
+        // ROUTE B: Render feed from your registered array (GitHub Safe)
         } else {
             feedSection.style.display = "block";
             singleViewSection.style.display = "none";
             gridContainer.innerHTML = ""; 
 
-            // Scrape the directory listing from Python
-            fetch('/articles/')
-                .then(res => { if (!res.ok) throw new Error(); return res.text(); })
-                .then(directoryHtml => {
-                    const parser = new DOMParser();
-                    const doc = parser.parseFromString(directoryHtml, 'text/html');
-                    
-                    // Filter down to strictly numbered files (1.html, 2.html, etc.)
-                    const links = Array.from(doc.querySelectorAll('a'))
-                                       .map(a => a.getAttribute('href'))
-                                       .filter(href => href && /^\d+\.html$/.test(href));
+            if (articlesList.length === 0) {
+                gridContainer.innerHTML = "<p>No briefings found in the articles folder.</p>";
+                return;
+            }
 
-                    if (links.length === 0) {
-                        gridContainer.innerHTML = "<p>No briefings found in the articles folder.</p>";
-                        return;
-                    }
+            // Sort articles so the newest slug appears first (e.g., 2 then 1)
+            articlesList.sort((a, b) => parseInt(b.slug) - parseInt(a.slug));
 
-                    // Map across your numerical files and extract contents
-                    const fetchPromises = links.map(href => {
-                        const slug = href.replace('.html', ''); // Extract "1", "2"
-                        
-                        return fetch(`/articles/${href}`)
-                            .then(res => res.text())
-                            .then(articleHtml => {
-                                const artDoc = parser.parseFromString(articleHtml, 'text/html');
-                                const title = artDoc.querySelector('h1, .full-post-title')?.innerText || "Untitled Briefing";
-                                const meta = artDoc.querySelector('.post-meta')?.innerText || "Analysis";
-                                const firstParagraph = artDoc.querySelector('p')?.innerText || "";
-                                const excerpt = firstParagraph.length > 160 ? firstParagraph.substring(0, 157) + "..." : firstParagraph;
-
-                                return { slug, title, meta, excerpt };
-                            })
-                            .catch(() => null);
-                    });
-
-                    // Render out the dynamic content loops
-                    Promise.all(fetchPromises).then(articles => {
-                        // Sort articles numerically so 1 shows before 2
-                        articles.sort((a, b) => (a && b) ? parseInt(a.slug) - parseInt(b.slug) : 0);
-
-                        articles.forEach(art => {
-                            if (!art) return;
-                            const card = document.createElement('article');
-                            card.className = 'post-card';
-                            card.innerHTML = `
-                                <span class="post-meta">${art.meta}</span>
-                                <h2>${art.title}</h2>
-                                <p class="post-excerpt">${art.excerpt}</p>
-                                <a href="/blog/?blog=${art.slug}" class="read-more-btn">Read Article <i class="fas fa-arrow-right"></i></a>
-                            `;
-                            gridContainer.appendChild(card);
-                        });
-                    });
-                })
-                .catch(() => {
-                    gridContainer.innerHTML = "<p>Unable to read the articles folder directly.</p>";
-                });
+            articlesList.forEach(art => {
+                const card = document.createElement('article');
+                card.className = 'post-card';
+                card.innerHTML = `
+                    <span class="post-meta">${art.meta}</span>
+                    <h2>${art.title}</h2>
+                    <p class="post-excerpt">${art.excerpt}</p>
+                    <a href="/blog/?blog=${art.slug}" class="read-more-btn">Read Article <i class="fas fa-arrow-right"></i></a>
+                `;
+                gridContainer.appendChild(card);
+            });
         }
     });
 </script>
