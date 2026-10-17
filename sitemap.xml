@@ -4,7 +4,7 @@
   <!-- Main Homepage -->
   <url>
     <loc>https://thomaspembertonmarsh.com/</loc>
-    <lastmod>2026-06-18</lastmod>
+    <lastmod>2026-10-17</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.00</priority>
   </url>
@@ -20,8 +20,23 @@
   <!-- Blog Feed Directory -->
   <url>
     <loc>https://thomaspembertonmarsh.com/blog/</loc>
-    <lastmod>2026-06-18</lastmod>
+    <lastmod>2026-10-17</lastmod>
     <changefreq>daily</changefreq>
+    <priority>0.80</priority>
+  </url>
+
+  <url>
+    <loc>https://thomaspembertonmarsh.com/blog/?blog=1</loc>
+    <lastmod>2026-10-17</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.80</priority>
+  </url>
+
+  <!-- New Article: A New Chapter -->
+  <url>
+    <loc>https://thomaspembertonmarsh.com/blog/?blog=2</loc>
+    <lastmod>2026-10-17</lastmod>
+    <changefreq>monthly</changefreq>
     <priority>0.80</priority>
   </url>
   
